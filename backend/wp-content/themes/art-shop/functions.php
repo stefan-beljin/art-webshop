@@ -176,3 +176,39 @@ if ( defined( 'JETPACK__VERSION' ) ) {
 	require get_template_directory() . '/inc/jetpack.php';
 }
 
+add_action('rest_api_init', function () {
+    register_rest_route('wp/v2', '/menu/(?P<slug>[a-zA-Z0-9-_]+)', [
+        'methods'  => 'GET',
+        'callback' => 'get_menu_items_by_slug',
+        'permission_callback' => '__return_true',
+    ]);
+});
+
+function get_menu_items_by_slug($data) {
+    $menu_slug = $data['slug'];
+    $locations = get_nav_menu_locations();
+
+    if (!isset($locations[$menu_slug])) {
+        return new WP_Error('menu_not_found', 'Menu not found', ['status' => 404]);
+    }
+
+    $menu = wp_get_nav_menu_object($locations[$menu_slug]);
+    $items = wp_get_nav_menu_items($menu->term_id);
+
+    $structured_items = [];
+    foreach ($items as $item) {
+		$slug_path = str_replace(home_url(), '', $item->url);
+        $slug_path = trim($slug_path, '/');
+
+        $structured_items[] = [
+            'id'     => $item->ID,
+            'title'  => $item->title,
+            'slug'    => $slug_path,
+            'parent' => $item->menu_item_parent,
+            'type'   => $item->type,
+            'object' => $item->object,
+        ];
+    }
+
+    return $structured_items;
+}
