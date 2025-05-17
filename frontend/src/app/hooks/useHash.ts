@@ -6,7 +6,7 @@ export const useHash = () => {
   const [hash, setHash] = useState("");
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    if (!window) return;
 
     const onHashChanged = () => setHash(window.location.hash);
     const { pushState, replaceState } = window.history;
