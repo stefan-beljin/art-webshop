@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 import useHash from "@/app/hooks/useHash";
-import useScrollLock from "@/app/hooks/useScrollLock";
 
 import NavItemModel from "@/app/models/navItemModel";
 
@@ -29,13 +30,30 @@ export default function Navigation({
   const pathName = usePathname();
   const isHomepage = pathName === "/";
 
+  const showMenu = () => {
+    gsap.fromTo(
+      ".nav-main",
+      { opacity: 0, translateX: "100%" },
+      { opacity: 1, translateX: "0%", duration: 0.5 }
+    );
+  };
+
+  const hideMenu = () => {
+    gsap.fromTo(
+      ".nav-main",
+      { opacity: 1, translateX: "0%" },
+      { opacity: 0, translateX: "100%", duration: 0.5 }
+    );
+  };
+
   const handleHamburgerClick = () => {
     setIsMenuVisible(true);
-    document.body.classList.add("scroll-lock");
+    showMenu();
   };
 
   const handleCloseClick = () => {
     setIsMenuVisible(false);
+    hideMenu();
   };
 
   useEffect(() => {
@@ -47,10 +65,6 @@ export default function Navigation({
       }
     }
   }, [hash, isHomepage, router, navItems]);
-
-  useEffect(() => {
-    setIsMenuVisible(false);
-  }, [hash, pathName]);
 
   useEffect(() => {
     if (isMenuVisible) {
@@ -72,13 +86,11 @@ export default function Navigation({
     <div className={`${hasMobileNav ? "px-[20px] py-[10px]" : ""}`}>
       <nav
         aria-label={navigationType}
-        className={`fixed top-[0] left-[0] bottom-[0] lg:static 
-        ${
-          isMenuVisible
-            ? "transform-[translateX(0)]"
-            : "transform-[translateX(100%)]"
-        } 
-                    lg:transform-[translateX(0)] w-full lg:w-auto p-[8%] bg-white`}
+        className={`
+          nav-main fixed top-[0] left-[0] bottom-[0] lg:static w-full lg:w-auto p-[8%] bg-white 
+          opacity-[0] lg:opacity-[1] transform-[translateX(100%)] lg:transform-[translateX(0)]
+          ${hasMobileNav ? "height: 0; opacity: 0" : ""}
+          `}
       >
         {navItems.length > 0 && (
           <ul>
@@ -92,6 +104,8 @@ export default function Navigation({
                   key={item.id}
                   item={item}
                   isActive={isActiveUrl}
+                  handleCloseMenu={handleCloseClick}
+                  isMobile={hasMobileNav}
                 />
               );
             })}

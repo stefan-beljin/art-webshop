@@ -7,12 +7,22 @@ import NavItemModel from "@/app/models/navItemModel";
 interface NavigationItemProps {
   item: NavItemModel;
   isActive: boolean;
+  handleCloseMenu: () => void;
+  isMobile: boolean;
 }
 
 export default function NavigationItem({
   item,
   isActive,
+  handleCloseMenu,
+  isMobile,
 }: NavigationItemProps) {
+  const handleNavLinkClick = () => {
+    if (isMobile) {
+      handleCloseMenu();
+    }
+  };
+
   useGSAP(() => {
     gsap.fromTo(
       ".nav-item",
@@ -37,6 +47,7 @@ export default function NavigationItem({
                        : "after:transform-[translateX(-100%)]"
                    }`}
         href={`/${item.slug}`}
+        onClick={handleNavLinkClick}
       >
         {item.title}
       </Link>
