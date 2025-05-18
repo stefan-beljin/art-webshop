@@ -34,7 +34,7 @@ export default function NavigationItem({
   return (
     <li className="nav-item relative">
       <Link
-        className={`relative block text-base pt-[18px] pl-[18px] pb-[18px] uppercase text-right mb-[15px]
+        className={`relative block text-base pt-[18px] pl-[18px] pb-[18px] uppercase text-left lg:text-right mb-[15px]
                     text-(--color-black) overflow-hidden font-medium
                     before:content-[''] before:block before:absolute 
                     before:top-[90%] before:left-[0] before:h-[3px] before:w-[100%] before:bg-[var(--color-light-gray)]

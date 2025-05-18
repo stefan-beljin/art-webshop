@@ -60,11 +60,13 @@ export default function Navigation({
     if (isHomepage) {
       const defaultSlug = navItems[0].slug;
 
-      if (hash === "") {
+      if (!hash) {
         router.push(defaultSlug);
+      } else {
+        router.push(hash);
       }
     }
-  }, [hash, isHomepage, router, navItems]);
+  }, [hash, pathName]);
 
   useEffect(() => {
     if (isMenuVisible) {
@@ -87,9 +89,8 @@ export default function Navigation({
       <nav
         aria-label={navigationType}
         className={`
-          nav-main fixed top-[0] left-[0] bottom-[0] lg:static w-full lg:w-auto p-[8%] bg-white 
-          opacity-[0] lg:opacity-[1] transform-[translateX(100%)] lg:transform-[translateX(0)]
-          ${hasMobileNav ? "height: 0; opacity: 0" : ""}
+          nav-main fixed top-[0] left-[0] bottom-[0] lg:static w-full lg:w-auto p-[8%] bg-white
+          h-[100%] opacity-[0] lg:opacity-[100%] transform-[translateX(100%)] lg:transform-[translateX(0)]
           `}
       >
         {navItems.length > 0 && (
@@ -114,7 +115,7 @@ export default function Navigation({
         {hasMobileNav && isMenuVisible && (
           <button
             type="button"
-            className="absolute top-[10px] left-[10px]"
+            className="absolute top-[10px] right-[20px]"
             onClick={handleCloseClick}
           >
             <IoCloseSharp fill="#000" className="h-[20px] w-[20px]" />
@@ -122,7 +123,11 @@ export default function Navigation({
         )}
       </nav>
       {hasMobileNav && (
-        <button type="button" onClick={handleHamburgerClick}>
+        <button
+          type="button"
+          className="block ml-auto"
+          onClick={handleHamburgerClick}
+        >
           <GiHamburgerMenu fill="#000" className="h-[20px] w-[20px]" />
         </button>
       )}
