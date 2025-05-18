@@ -1,7 +1,13 @@
-export default function Header() {
+import Navigation from "../molecules/Navigation";
+import navService from "@/app/services/navService";
+import { menuSlug } from "@/app/constants";
+
+export default async function Header() {
+  const navItems = await navService.fetchNavItemsBySlug(menuSlug);
+
   return (
-    <header className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      Header
+    <header className="grid items-center lg:fixed top-0 left-0 lg:h-screen lg:w-1/5 font-[family-name:var(--font-geist-sans)] bg-white">
+      <Navigation navigationType="main" navItems={navItems} />
     </header>
   );
 }

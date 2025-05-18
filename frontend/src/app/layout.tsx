@@ -21,10 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased h-screen lg:grid lg:grid-cols-[1fr_4fr] grid-rows-[1fr_auto]`}
       >
         <Header />
-        <main>{children}</main>
+        <main className="col-start-[2]">{children}</main>
         <Footer />
       </body>
     </html>

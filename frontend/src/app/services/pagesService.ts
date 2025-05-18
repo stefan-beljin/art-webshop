@@ -1,13 +1,35 @@
-const API_BASE = process.env.API_ENDPOINT;
+import { API_ROUTES, API_BASE } from "@/app/constants";
 
 const fetchPages = async () => {
   try {
-    const response = await fetch(`${API_BASE}/pages`);
-    const data = response.json();
+    const response = await fetch(`${API_BASE}${API_ROUTES.GET_PAGES_ROUTE}`);
+    const data = await response.json();
     return data;
   } catch (err) {
-    throw new Error("Failed to load pages");
+    let message;
+    if (err instanceof Error) message = err.message;
+    else message = String(err);
+
+    throw new Error(message);
   }
 };
 
-export default { fetchPages };
+const fetchPageBySlug = async (slug: string) => {
+  try {
+    const response = await fetch(
+      `${API_BASE}${API_ROUTES.GET_PAGES_ROUTE}?slug=${slug}`
+    );
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    let message;
+    if (err instanceof Error) message = err.message;
+    else message = String(err);
+
+    throw new Error(message);
+  }
+};
+
+const pagesService = { fetchPageBySlug, fetchPages };
+
+export default pagesService;
