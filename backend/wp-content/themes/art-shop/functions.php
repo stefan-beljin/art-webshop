@@ -212,3 +212,19 @@ function get_menu_items_by_slug($data) {
 
     return $structured_items;
 }
+
+
+add_action("rest_api_init", function () {
+  register_rest_route('wp/v2', "/options/(?P<slug>[a-zA-Z0-9-_]+)", [
+    "methods" => "GET",
+    "callback" => "acf_options_route",
+    "permission_callback" => "__return_true",
+  ]);
+});
+
+function acf_options_route($data) {
+  $field_slug = $data['slug'];
+  $clients = get_field($field_slug, 'option');
+
+  return $clients;
+}
