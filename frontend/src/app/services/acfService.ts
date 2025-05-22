@@ -2,7 +2,7 @@ import { API_ROUTES, API_BASE } from "@/app/constants";
 import { get } from "@/app/utils";
 
 import FooterModel from "../models/footerModel";
-import AcfPageResponseModel from "../models/AcfPageResponseModel";
+import AcfPageResponseModel from "../models/acfPageResponseModel";
 
 const fetchOptionsByGroupName = async (name: string) =>
   get<FooterModel>(

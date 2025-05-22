@@ -14,7 +14,7 @@ interface HeroProps {
 }
 
 export default function Hero({ data }: HeroProps) {
-  if (!data) return;
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const {
     id,
@@ -23,7 +23,6 @@ export default function Hero({ data }: HeroProps) {
     secondStripedImage,
     thirdStripedImage,
   } = data;
-  const heroRef = useRef<HTMLDivElement>(null);
 
   gsap.registerPlugin(ScrollToPlugin);
 

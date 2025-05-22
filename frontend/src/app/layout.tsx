@@ -3,7 +3,7 @@ import "./globals.css";
 import Header from "./components/organisms/Header";
 import Footer from "./components/organisms/Footer";
 
-const abril = Montserrat_Alternates({ weight: "500" });
+const abril = Montserrat_Alternates({ weight: "500", subsets: ["latin"] });
 
 export default function RootLayout({
   children,
