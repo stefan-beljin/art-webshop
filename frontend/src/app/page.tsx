@@ -1,11 +1,14 @@
-import pagesService from "./services/pagesService";
+import acfService from "./services/acfService";
+import Hero from "./components/organisms/Hero";
+import Gallery from "./components/organisms/Gallery";
 
 export default async function Home() {
-  const data = await pagesService.fetchPages();
+  const data = await acfService.fetchPageAcfBySlug("homepage");
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      This is maiiiin
+    <div className="h-full">
+      <Hero data={data.acf.banner} />
+      <Gallery data={data.acf.gallery} />
     </div>
   );
 }
