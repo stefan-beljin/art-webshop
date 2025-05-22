@@ -5,7 +5,7 @@
         {
             "key": "field_682ccda1950dc",
             "label": "Fields",
-            "name": "text_and_image",
+            "name": "image_and_text",
             "aria-label": "",
             "type": "group",
             "instructions": "",
@@ -113,9 +113,9 @@
     "location": [
         [
             {
-                "param": "post_type",
+                "param": "page_type",
                 "operator": "==",
-                "value": "post"
+                "value": "front_page"
             }
         ]
     ],
@@ -128,5 +128,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1747767306
+    "modified": 1747880519
 }

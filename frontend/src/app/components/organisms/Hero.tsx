@@ -14,6 +14,8 @@ interface HeroProps {
 }
 
 export default function Hero({ data }: HeroProps) {
+  if (!data) return;
+
   const {
     id,
     title,
@@ -22,6 +24,8 @@ export default function Hero({ data }: HeroProps) {
     thirdStripedImage,
   } = data;
   const heroRef = useRef<HTMLDivElement>(null);
+
+  gsap.registerPlugin(ScrollToPlugin);
 
   useGSAP(() => {
     const isMobile = window?.innerWidth < 768;
@@ -38,13 +42,13 @@ export default function Hero({ data }: HeroProps) {
       },
     });
 
-    if (!isMobile) {
-      tl.fromTo(
-        ".nav-item",
-        { opacity: 0, top: "20px" },
-        { opacity: 1, top: 0, duration: 0.5, stagger: 0.15, ease: "power3.out" }
-      );
+    tl.fromTo(
+      ".nav-item",
+      { opacity: 0, top: "20px" },
+      { opacity: 1, top: 0, duration: 0.5, stagger: 0.15, ease: "power3.out" }
+    );
 
+    if (!isMobile) {
       tl.fromTo(
         ".banner-clip",
         { opacity: 0, y: 60 },
@@ -94,7 +98,6 @@ export default function Hero({ data }: HeroProps) {
     if (heroRef.current) {
       const nextSection = heroRef.current.nextElementSibling;
       if (nextSection) {
-        gsap.registerPlugin(ScrollToPlugin);
         gsap.to(window, {
           duration: 1,
           scrollTo: { y: nextSection, autoKill: false },
@@ -111,12 +114,14 @@ export default function Hero({ data }: HeroProps) {
       className="relative p-8 sm:px-15 h-[calc(100vh-40px)] lg:h-screen overflow-hidden flex items-end justify-end"
     >
       <div className="relative z-2 flex flex-col items-start">
-        <h1
-          className="hero-title text-white text-[36px] lg:text-[72px] opacity-0 bg-[rgba(0,0,0,0.2)] p-3 rounded-2xl
+        {title && (
+          <h1
+            className="hero-title text-white text-[36px] lg:text-[72px] opacity-0 bg-[rgba(0,0,0,0.2)] p-3 rounded-2xl
             lg:bg-transparent lg:p-0 lg:rounded-none text-right lg:text-left"
-        >
-          {title}
-        </h1>
+          >
+            {title}
+          </h1>
+        )}
         <div className="hero-underline bg-white h-1 w-0 mt-1 rounded" />
         <button
           type="button"
