@@ -1,5 +1,7 @@
+"use client";
+
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import { ScrollToPlugin } from "gsap/all";
 
 import Link from "next/link";
 import NavItemModel from "@/app/models/navItemModel";
@@ -17,22 +19,32 @@ export default function NavigationItem({
   handleCloseMenu,
   isMobile,
 }: NavigationItemProps) {
-  const handleNavLinkClick = () => {
+  const handleNavLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+  ) => {
     if (isMobile) {
       handleCloseMenu();
     }
+
+    gsap.registerPlugin(ScrollToPlugin);
+
+    if (item.slug.includes("#")) {
+      e.preventDefault();
+      const sectionID = item.slug.split("#")[1];
+      const targetSection = document.getElementById(sectionID);
+
+      if (targetSection) {
+        gsap.to(window, {
+          scrollTo: { y: targetSection, autoKill: false },
+          duration: 1,
+          ease: "power3.out",
+        });
+      }
+    }
   };
 
-  useGSAP(() => {
-    gsap.fromTo(
-      ".nav-item",
-      { opacity: 0, top: "20px" },
-      { opacity: 1, top: 0, duration: 0.5, stagger: 0.2 }
-    );
-  });
-
   return (
-    <li className="nav-item relative">
+    <li className="nav-item relative opacity-0">
       <Link
         className={`relative block text-base pt-[18px] pl-[18px] pb-[18px] uppercase text-left lg:text-right mb-[15px]
                     text-(--color-black) overflow-hidden font-medium

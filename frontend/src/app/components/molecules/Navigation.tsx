@@ -1,11 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 
-import useHash from "@/app/hooks/useHash";
+import { useActiveSection } from "@/app/hooks/useActiveSection";
 
 import NavItemModel from "@/app/models/navItemModel";
 
@@ -25,10 +24,10 @@ export default function Navigation({
 }: NavigationProps) {
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
   const [hasMobileNav, setHasMobileNav] = useState<boolean>(false);
-  const hash = useHash();
-  const router = useRouter();
+  const [hydrated, setHydrated] = useState(false);
   const pathName = usePathname();
-  const isHomepage = pathName === "/";
+  const activeSectionIDs = navItems.map((item) => item.slug?.split("#")[1]);
+  const activeSection = useActiveSection(activeSectionIDs);
 
   const showMenu = () => {
     gsap.fromTo(
@@ -57,24 +56,8 @@ export default function Navigation({
   };
 
   useEffect(() => {
-    if (isHomepage) {
-      const defaultSlug = navItems[0].slug;
-
-      if (!hash) {
-        router.push(defaultSlug);
-      } else {
-        router.push(hash);
-      }
-    }
-  }, [hash, pathName]);
-
-  useEffect(() => {
-    if (isMenuVisible) {
-      document?.body.classList.add("scroll-lock");
-    } else {
-      document?.body.classList.remove("scroll-lock");
-    }
-  }, [isMenuVisible]);
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     if (window.innerWidth <= 1024) {
@@ -85,26 +68,40 @@ export default function Navigation({
   }, []);
 
   return (
-    <div className={`${hasMobileNav ? "px-[20px] py-[10px]" : ""}`}>
+    <div
+      className={`relative z-99 ${hasMobileNav ? "px-[20px] py-[10px]" : ""}`}
+    >
       <nav
         aria-label={navigationType}
         className={`
-          nav-main fixed top-[0] left-[0] bottom-[0] lg:static w-full lg:w-auto p-[8%] bg-white
-          h-[100%] opacity-[0] lg:opacity-[100%] transform-[translateX(100%)] lg:transform-[translateX(0)]
-          `}
+          nav-main fixed top-0 left-0 bottom-0 lg:static w-full lg:w-auto p-[8%] bg-white h-full
+          transition-all duration-300
+          ${hydrated ? "" : "hidden lg:block"}
+          ${
+            hasMobileNav
+              ? isMenuVisible
+                ? "opacity-100 translate-x-0 pointer-events-auto"
+                : "opacity-0 translate-x-full pointer-events-none"
+              : "opacity-100 translate-x-0"
+          }
+        `}
       >
         {navItems.length > 0 && (
           <ul>
             {navItems.map((item) => {
-              const isActiveUrl = isHomepage
-                ? hash === item.slug
-                : pathName.split("/")[1] === item.slug;
+              let isActive = false;
+
+              if (item.slug.startsWith("#")) {
+                isActive = activeSection === item.slug.split("#")[1];
+              } else {
+                isActive = pathName === item.slug;
+              }
 
               return (
                 <NavigationItem
                   key={item.id}
                   item={item}
-                  isActive={isActiveUrl}
+                  isActive={isActive}
                   handleCloseMenu={handleCloseClick}
                   isMobile={hasMobileNav}
                 />

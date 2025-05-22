@@ -224,7 +224,52 @@ add_action("rest_api_init", function () {
 
 function acf_options_route($data) {
   $field_slug = $data['slug'];
+
   $clients = get_field($field_slug, 'option');
+	
+
+  if (!empty($clients['address'])) {
+	$clients['address'] = wp_kses_post($clients['address']);
+  }
 
   return $clients;
+}
+
+add_action("rest_api_init", function () {
+  register_rest_route('wp/v2', '/page-acf/(?P<slug>[a-zA-Z0-9-_]+)', [
+    'methods' => 'GET',
+    'callback' => 'acf_page_route',
+    'permission_callback' => '__return_true', // Use auth if needed
+  ]);
+});
+
+function acf_page_route($data) {
+  $slug = sanitize_text_field($data['slug']);
+
+  // Attempt to get the page
+  $post = get_page_by_path($slug, OBJECT, 'page');
+
+  if (!$post) {
+    return new WP_REST_Response([
+      'success' => false,
+      'message' => 'Page not found',
+    ], 404);
+  }
+
+  // Get ACF fields
+  $acf_fields = get_fields($post->ID);
+
+  if (empty($acf_fields)) {
+    return new WP_REST_Response([
+      'success' => false,
+      'message' => 'No ACF fields found for this page',
+      'page_id' => $post->ID,
+    ], 204); // 204 = No Content
+  }
+
+  return new WP_REST_Response([
+    'success' => true,
+    'page_id' => $post->ID,
+    'acf' => $acf_fields,
+  ], 200);
 }
