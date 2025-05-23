@@ -5,7 +5,6 @@ on:
     branches:
       - develop
       - main
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -23,12 +22,12 @@ jobs:
         run: |
           rsync -avz --delete \
             -e "ssh -o StrictHostKeyChecking=no" \
-            ./ ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}}:/art-webshop/frontend
+            ./ ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}}:/root/art-webshop/frontend
 
       - name: Install dependencies and restart app
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}} << 'EOF'
-            cd /art-webshop/frontend
+            cd /root/art-webshop/frontend
             npm install
             npm run build
             pm2 restart nextjs || pm2 start npm --name "nextjs" -- start
