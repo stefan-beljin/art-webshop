@@ -26,7 +26,6 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "${{ secrets.APP_API }}" > .env
           if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
             echo "${{ secrets.APP_ENV_PROD }}" > .env
           else
