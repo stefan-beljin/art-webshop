@@ -24,6 +24,15 @@ jobs:
             -e "ssh -o StrictHostKeyChecking=no" \
             ./frontend/ ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}}:/root/art-webshop/frontend
 
+      - name: Set environment variables
+        run: |
+          echo "${{ secrets.APP_API }}" > .env
+          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+            echo "${{ secrets.APP_ENV_PROD }}" > .env
+          else
+            echo "${{ secrets.APP_ENV_DEV }}" > .env
+          fi
+        working-directory: ./frontend
       - name: Install dependencies and restart app
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}} << 'EOF'
