@@ -37,5 +37,5 @@ jobs:
             cd /root/art-webshop/frontend
             npm install
             npm run build
-            pm2 restart nextjs || pm2 start npm --name "nextjs" -- start
+            pm2 restart "nextjs" --update-env || pm2 start npm --name "nextjs" -- start
           EOF
