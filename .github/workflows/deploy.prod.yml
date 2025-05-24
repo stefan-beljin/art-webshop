@@ -21,16 +21,16 @@ jobs:
         run: |
           rsync -avz --delete \
             -e "ssh -o StrictHostKeyChecking=no" \
-            ./frontend/ ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}}:/var/www/html/atelje-stage/
+            ./frontend/ ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}}:/var/www/html/atelje-prod/
 
       - name: Set environment variables on server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "echo '${{ secrets.APP_ENV_PROD }}' > /var/www/html/atelje-stage/.env"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "echo '${{ secrets.APP_ENV_PROD }}' > /var/www/html/atelje-prod/.env"
 
       - name: Install dependencies and restart app
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}} << 'EOF'
-            cd /var/www/html/atelje-stage/
+            cd /var/www/html/atelje-prod/
             npm install
             npm run build
             pm2 restart "nextjs-prod" --update-env || pm2 start npm --name "nextjs-prod" -- run start-prod
