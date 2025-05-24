@@ -33,5 +33,5 @@ jobs:
             cd /var/www/html/atelje-stage/
             npm install
             npm run build
-            pm2 restart "nextjs" --update-env || pm2 start npm --name "nextjs" -- start
+            pm2 restart "nextjs" --update-env || pm2 start npm --name "nextjs" -- dev
           EOF
