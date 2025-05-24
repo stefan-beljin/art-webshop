@@ -1,0 +1,37 @@
+name: Build and Deploy app for production
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.ARTIFACT_SSH_KEY }}
+
+      - name: Copy files to server
+        run: |
+          rsync -avz --delete \
+            -e "ssh -o StrictHostKeyChecking=no" \
+            ./frontend/ ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}}:/var/www/html/atelje-stage/
+
+      - name: Set environment variables on server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "echo '${{ secrets.APP_ENV_PROD }}' > /var/www/html/atelje-stage/.env"
+
+      - name: Install dependencies and restart app
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}} << 'EOF'
+            cd /var/www/html/atelje-stage/
+            npm install
+            npm run build
+            pm2 restart "nextjs-prod" --update-env || pm2 start npm --name "nextjs-prod" -- run start-prod
+          EOF
