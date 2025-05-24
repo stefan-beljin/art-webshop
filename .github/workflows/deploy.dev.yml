@@ -31,7 +31,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}} << 'EOF'
             cd /var/www/html/atelje-stage/
-            npm install
-            npm run build
-            pm2 restart "nextjs" --update-env || pm2 start npm --name "nextjs" -- dev
+          npm install
+          pm2 restart "nextjs" --update-env || pm2 start npm --name "nextjs" -- dev
           EOF
