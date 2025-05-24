@@ -1,9 +1,8 @@
-name: Deploy Next.js to Hetzner
+name: Build and Deploy app for production
 
 on:
   push:
     branches:
-      - develop
       - main
 jobs:
   deploy:
@@ -22,20 +21,17 @@ jobs:
         run: |
           rsync -avz --delete \
             -e "ssh -o StrictHostKeyChecking=no" \
-            ./frontend/ ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}}:/root/art-webshop/frontend
+            ./frontend/ ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}}:/var/www/html/atelje-stage/
 
       - name: Set environment variables on server
         run: |
-          if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
-            ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "echo '${{ secrets.APP_ENV_PROD }}' > /root/art-webshop/frontend/.env"
-          else
-            ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "echo '${{ secrets.APP_ENV_DEV }}' > /root/art-webshop/frontend/.env"
-          fi
+          ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{ secrets.ARTIFACT_HOST }} "echo '${{ secrets.APP_ENV_PROD }}' > /var/www/html/atelje-stage/.env"
+
       - name: Install dependencies and restart app
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.ARTIFACT_USERNAME }}@${{secrets.ARTIFACT_HOST}} << 'EOF'
-            cd /root/art-webshop/frontend
+            cd /var/www/html/atelje-stage/
             npm install
             npm run build
-            pm2 restart "nextjs" --update-env || pm2 start npm --name "nextjs" -- start
+            pm2 restart "nextjs-prod" --update-env || pm2 start npm --name "nextjs-prod" -- run start-prod
           EOF
