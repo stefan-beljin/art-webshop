@@ -2,6 +2,7 @@
 
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/all";
+import { useRouter } from "next/navigation";
 
 import Link from "next/link";
 import NavItemModel from "@/app/models/navItemModel";
@@ -19,6 +20,8 @@ export default function NavigationItem({
   handleCloseMenu,
   isMobile,
 }: NavigationItemProps) {
+  const router = useRouter();
+
   const handleNavLinkClick = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
@@ -39,7 +42,12 @@ export default function NavigationItem({
           duration: 1,
           ease: "power3.out",
         });
+      } else {
+        router.push(`/#${sectionID}`);
       }
+    } else {
+      e.preventDefault();
+      router.push(`/${item.slug}`);
     }
   };
 
