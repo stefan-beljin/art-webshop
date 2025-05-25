@@ -1,17 +1,21 @@
-import pagesService from "../services/pagesService";
+import acfService from "../services/acfService";
 import { notFound } from "next/navigation";
+import Hero from "../components/organisms/Hero";
 
 export default async function Page({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const slug = (await params).slug;
-  const data = await pagesService.fetchPageBySlug(slug);
+  const data = await acfService.fetchPageAcfBySlug("sample-page");
 
-  if (data.length === 0) {
+  if (!data) {
     notFound();
   }
 
-  return <div>{JSON.stringify(data)}</div>;
+  const { acf } = data;
+
+  return (
+    <div className="h-full">{acf?.banner && <Hero data={acf.banner} />}</div>
+  );
 }
