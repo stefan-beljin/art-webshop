@@ -11,13 +11,17 @@ export const get = async <T>(
       throw new Error("Network response was not ok");
     }
 
-    const data = await response.json();
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : {};
     const formattedData = camelcaseKeys(data, { deep: true });
     return formattedData;
   } catch (err) {
     let message;
-    if (err instanceof Error) message = err.message;
-    else message = String(err);
+    if (err instanceof Error) {
+      message = err.message;
+    } else {
+      message = String(err);
+    }
 
     throw new Error(message);
   }
