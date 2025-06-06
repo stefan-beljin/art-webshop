@@ -16,7 +16,7 @@ export default async function Home() {
       <Hero data={acf.banner} />
       <ImageAndText data={acf.imageAndText} />
       <Gallery data={acf.gallery} />
-      <Form />
+      <Form data={acf.form} />
     </div>
   );
 }

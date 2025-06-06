@@ -11,7 +11,7 @@ export default async function Footer() {
   const { footerTitle, address, email, copyright, socials } = data;
 
   return (
-    <footer className="px-8 gap-16 sm:px-15 lg:col-start-[2]">
+    <footer className="bg-black text-white px-8 gap-16 sm:px-15 lg:col-start-[2]">
       <div className="flex justify-between w-full py-[32px]">
         <div>
           {footerTitle && (
