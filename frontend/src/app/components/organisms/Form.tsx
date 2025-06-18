@@ -12,7 +12,7 @@ export default function Form({ data }: FormProps) {
 
   return (
     <section id={id}>
-      <Wrapper extraClasses="flex justify-between">
+      <Wrapper extraClasses="md:flex justify-between">
         <h2 className="text-3xl font-bold mb-4 flex-1">{title}</h2>
         <form id={id} action={sendEmail} className="bg-white text-black flex-1">
           <ul>

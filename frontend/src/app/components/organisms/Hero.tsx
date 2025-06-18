@@ -110,7 +110,7 @@ export default function Hero({ data }: HeroProps) {
     <section
       id={id}
       ref={heroRef}
-      className="relative p-8 sm:px-15 h-[calc(100vh-40px)] lg:h-screen overflow-hidden flex items-end justify-end bg-[rgb(24_24_24)]"
+      className="relative p-8 sm:px-15 h-svh h-[calc(100vh-40px)] lg:h-screen overflow-hidden flex items-end justify-end bg-[rgb(24_24_24)]"
     >
       <div className="relative z-2 flex flex-col items-start">
         {title && (
