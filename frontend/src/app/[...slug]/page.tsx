@@ -2,11 +2,7 @@ import acfService from "../services/acfService";
 import { notFound } from "next/navigation";
 import Hero from "../components/organisms/Hero";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
+export default async function Page({}: { params: Promise<{ slug: string }> }) {
   const data = await acfService.fetchPageAcfBySlug("sample-page");
 
   if (!data) {
