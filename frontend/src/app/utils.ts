@@ -26,3 +26,10 @@ export const get = async <T>(
     throw new Error(message);
   }
 };
+
+export const fillTemplate = (
+  template: string,
+  data: Record<string, string>
+) => {
+  return template.replace(/{{(.*?)}}/g, (_, key) => data[key.trim()] || "");
+};
