@@ -1,4 +1,5 @@
 import BannerModel from "./bannerModel";
+import FormModel from "./formModel";
 import GalleryModel from "./galleryModel";
 import ImageAndTextModel from "./imageAndTextModel";
 
@@ -12,6 +13,7 @@ interface AcfContentModel {
   banner: BannerModel;
   gallery: GalleryModel;
   imageAndText: ImageAndTextModel;
+  form: FormModel;
 }
 
 export default AcfPageResponseModel;

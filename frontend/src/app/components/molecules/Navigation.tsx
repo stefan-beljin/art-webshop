@@ -33,7 +33,7 @@ export default function Navigation({
     gsap.fromTo(
       ".nav-main",
       { opacity: 0, translateX: "100%" },
-      { opacity: 1, translateX: "0%", duration: 0.5 }
+      { opacity: 1, translateX: "0%", duration: 0.3, ease: "power2.out" }
     );
   };
 
@@ -41,7 +41,7 @@ export default function Navigation({
     gsap.fromTo(
       ".nav-main",
       { opacity: 1, translateX: "0%" },
-      { opacity: 0, translateX: "100%", duration: 0.5 }
+      { opacity: 0, translateX: "100%", duration: 0.3, ease: "power2.in" }
     );
   };
 

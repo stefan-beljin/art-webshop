@@ -5,7 +5,6 @@ const useScrollLock = () => {
     document.body.classList.add("scroll-lock");
 
     return () => {
-      debugger;
       document.body.classList.remove("scroll-lock");
     };
   }, []);

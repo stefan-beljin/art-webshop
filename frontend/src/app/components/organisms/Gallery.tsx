@@ -22,7 +22,7 @@ export default function Gallery({ data }: GalleryProps) {
       {backgroundImage && (
         <ImageAtom
           image={backgroundImage}
-          className="absolute z-[0] top-[0] left-[0] object-cover h-full w-full"
+          className="absolute z-[0] top-[0] left-[0] h-full w-full"
         />
       )}
       {items.length > 0 && (
