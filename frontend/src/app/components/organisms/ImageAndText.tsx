@@ -13,7 +13,7 @@ export default function ImageAndText({ data }: ImageAndTextProps) {
   return (
     <section
       id={id}
-      className="lg:flex lg:gap-[40px] lg:items-center lg:h-screen relative py-16 p-8 sm:px-15 bg-white text-black"
+      className="lg:flex lg:gap-[40px] lg:items-center lg:h-auto relative py-16 p-8 sm:px-15 bg-white text-black"
     >
       <div className="lg:max-w-[45%] basis-1/2">
         {title && (
