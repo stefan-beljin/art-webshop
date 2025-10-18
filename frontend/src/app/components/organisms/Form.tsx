@@ -33,6 +33,25 @@ const initialState: FormActionStateProps = {
   formData: undefined,
 };
 
+interface FormDataModel {
+  firstName: string;
+  lastName: string;
+  email: string;
+  question: string;
+}
+
+interface FormActionStateProps {
+  errors: $ZodIssue[] | undefined;
+  success: boolean;
+  formData: FormDataModel | undefined;
+}
+
+const initialState: FormActionStateProps = {
+  errors: undefined,
+  success: false,
+  formData: undefined,
+};
+
 export default function Form({ data }: FormProps) {
   const { id, title, image } = data || {};
   const [state, formAction] = useActionState(sendEmail, initialState);
