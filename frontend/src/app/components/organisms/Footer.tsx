@@ -32,7 +32,7 @@ export default async function Footer() {
       <div className="flex justify-between py-[20px] border-t-2 border-(--color-light-gray) w-full">
         {copyright && <p>{copyright}</p>}
         {socials.length > 0 && (
-          <ul>
+          <ul className="flex gap-2">
             {socials.map((social) => {
               const { socialUrl, icon } = social;
               return (

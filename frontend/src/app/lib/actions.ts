@@ -54,7 +54,7 @@ const sendConfirmationEmail = async (submission: FormSubmission) => {
 
   try {
     transporter.sendMail({
-      from: "webmaster@ateljenatasabeljin.com",
+      from: `Atelje Nataša Beljin <${String(process.env.SMTP_USER)}>`,
       to: String(submission.email),
       subject: "Potvrda prijema mejla",
       html,
@@ -84,7 +84,7 @@ const sendQueryEmail = async (submission: FormSubmission) => {
 
   try {
     transporter.sendMail({
-      from: "webmaster@ateljenatasabeljin.com",
+      from: `Atelje Nataša Beljin <${String(process.env.SMTP_USER)}>`,
       to: String(process.env.ADMIN_EMAIL), // Send to admin
       subject: "Nova poruka sa sajta",
       html,
