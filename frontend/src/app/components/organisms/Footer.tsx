@@ -12,8 +12,8 @@ export default async function Footer() {
 
   return (
     <footer className="bg-black text-white px-8 gap-16 sm:px-15 lg:col-start-[2]">
-      <div className="flex justify-between w-full py-[32px]">
-        <div>
+      <div className="sm:flex justify-between py-[32px]">
+        <div className="mb-[20px] sm:mb-0">
           {footerTitle && (
             <h2 className="text-[22px] lg:text-[36px] mb-[20px]">
               {footerTitle}
@@ -29,7 +29,7 @@ export default async function Footer() {
         </div>
         <BackToTop />
       </div>
-      <div className="flex justify-between py-[20px] border-t-2 border-(--color-light-gray) w-full">
+      <div className="flex justify-between py-[20px] border-t-2 border-(--color-light-gray)">
         {copyright && <p>{copyright}</p>}
         {socials.length > 0 && (
           <ul className="flex gap-2">
